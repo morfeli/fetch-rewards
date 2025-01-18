@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header/Header";
+import { ChatWidget } from "./components/AI/ChatWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,12 @@ export default function RootLayout({
       >
         <Header />
         {children}
+        <ChatWidget />
+        <footer className="bg-white shadow-md mt-8">
+          <div className="container mx-auto px-4 py-4 text-center text-sm text-gray-600">
+            © 2023 DogSearch. All rights reserved.
+          </div>
+        </footer>
       </body>
     </html>
   );

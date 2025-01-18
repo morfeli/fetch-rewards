@@ -31,7 +31,7 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <Dog className="h-8 w-8 text-blue-500" />
-          <span className="text-xl font-bold">DogSearch</span>
+          <span className="text-xl font-bold">DoggySearch</span>
         </Link>
 
         <nav className="hidden md:flex space-x-4">
@@ -40,12 +40,7 @@ export default function Header() {
               <Link href="/about" className="text-gray-600 hover:text-blue-500">
                 About
               </Link>
-              <Link
-                href="/search"
-                className="text-gray-600 hover:text-blue-500"
-              >
-                Search
-              </Link>
+
               <Link
                 href="/favorites"
                 className="text-gray-600 hover:text-blue-500"
@@ -57,9 +52,6 @@ export default function Header() {
                 className="text-gray-600 hover:text-blue-500"
               >
                 Contact
-              </Link>
-              <Link href="/chat" className="text-gray-600 hover:text-blue-500">
-                AI Chat
               </Link>
             </>
           ) : (
