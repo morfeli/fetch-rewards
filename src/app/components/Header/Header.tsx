@@ -10,6 +10,8 @@ import Cookies from "js-cookie";
 import { Dog, Loader2 } from "lucide-react";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { Button } from "../ShadcnUI/Button";
+import { MobileBtn } from "./MobileBtn";
+import MobileMenu from "./MobileMenu";
 
 const NAV_LINKS = [
   { href: "/dashboard", label: "Home" },
@@ -28,9 +30,19 @@ export default function Header({
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     initialIsAuthenticated?.value === "true",
   );
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isOpen, setOpen] = useState<boolean>(false);
+
   const router = useRouter();
   const pathname = usePathname();
+
+  function toggleMenu() {
+    setOpen((current) => !current);
+  }
+
+  function closeMenu() {
+    setOpen(false);
+  }
 
   useEffect(() => {
     const checkAuthStatus = () => {
@@ -90,41 +102,51 @@ export default function Header({
 
     if (isAuthenticated) {
       return (
-        <div
-          className="flex items-baseline space-x-4"
-          aria-label="Navigation links for authenticated users"
-        >
-          {NAV_LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`text-sm font-medium transition-colors hover:text-blue-500 ${
-                pathname === href
-                  ? "text-slate-900 underline underline-offset-4"
-                  : "text-gray-600"
-              }`}
-              aria-current={pathname === href ? "page" : undefined}
-              aria-label={label}
-            >
-              {label}
-            </Link>
-          ))}
-          <Button
-            variant="outline"
-            onClick={handleLogout}
-            disabled={isLoading}
-            className="p-0 h-8 px-4 rounded-2xl bg-slate-700 text-white hover:bg-slate-800"
-            aria-label={isLoading ? "Logging out" : "Logout"}
+        <div>
+          <ul
+            className=" items-baseline space-x-4 hidden sm:flex"
+            aria-label="Navigation links for authenticated users"
           >
-            {isLoading ? "Logging out..." : "Logout"}
-          </Button>
+            {NAV_LINKS.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className={`text-sm font-medium transition-colors hover:text-blue-500 ${
+                  pathname === href
+                    ? "text-slate-900 underline underline-offset-4"
+                    : "text-gray-600"
+                }`}
+                aria-current={pathname === href ? "page" : undefined}
+                aria-label={label}
+              >
+                <li>{label}</li>
+              </Link>
+            ))}
+            <Button
+              variant="outline"
+              onClick={handleLogout}
+              disabled={isLoading}
+              className="p-0 h-8 px-4 rounded-2xl bg-slate-700 text-white hover:bg-slate-800"
+              aria-label={isLoading ? "Logging out" : "Logout"}
+            >
+              {isLoading ? "Logging out..." : "Logout"}
+            </Button>
+          </ul>
+          <MobileBtn isOpen={isOpen} toggleMenu={toggleMenu} />
+          <MobileMenu
+            isOpen={isOpen}
+            closeMenu={closeMenu}
+            links={NAV_LINKS}
+            handleLogout={handleLogout}
+            isLoading={isLoading}
+          />
         </div>
       );
     }
 
     return (
       <div
-        className="bg-slate-500 p-2 rounded-xl shadow-md text-center"
+        className="bg-slate-500 p-2 rounded-xl shadow-md text-center hidden sm:flex sm:flex-col"
         aria-label="Login prompt for unauthenticated users"
       >
         <p
@@ -152,7 +174,7 @@ export default function Header({
           <span className="text-xl font-bold">DoggySearch</span>
         </Link>
         <nav
-          className="hidden md:flex items-center space-x-6  justify-center"
+          className=" items-center space-x-6  justify-center"
           aria-label="Main navigation menu"
         >
           {renderNavContent()}

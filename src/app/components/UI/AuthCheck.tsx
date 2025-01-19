@@ -17,7 +17,6 @@ export default function AuthCheck({ children }: AuthCheckProps) {
     const isAuthenticated = Cookies.get("isAuthenticated") === "true";
 
     if (!isAuthenticated && pathname !== "/") {
-      // Redirect to login if not authenticated and not on the home page
       router.push("/");
     }
   }, [pathname, router]);

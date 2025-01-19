@@ -66,7 +66,7 @@ export default function LoginForm({ isAuthenticated }: LoginFormProps) {
 
       setTimeout(() => {
         router.push("/dashboard");
-      }, 2000);
+      }, 1000);
     } catch (error) {
       console.error("Login error:", error);
 
