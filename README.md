@@ -13,10 +13,10 @@
 ### Installation
 
 -Clone the repository
--git clone https://github.com/yourusername/save-the-dogs.git
+git clone https://github.com/yourusername/save-the-dogs.git
 -Navigate to project directory
--cd save-the-dogs
--Install dependencies
+cd save-the-dogs
+Install dependencies
 -npm install
 
 
