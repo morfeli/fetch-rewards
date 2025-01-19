@@ -12,12 +12,15 @@ interface DogCardProps {
 
 export function DogCard({ dog, isFavorite, onToggleFavorite }: DogCardProps) {
   return (
-    <Card key={dog.id}>
+    <Card
+      key={dog.id}
+      className="shadow-lg shadow-slate-500 hover:scale-105 transition-all duration-300 bg-white fade-in"
+    >
       <CardContent className="p-4">
         <Image
           src={dog.img}
           alt={dog.name}
-          className="w-full h-48 object-cover rounded-md mb-4"
+          className="w-full h-60 object-cover rounded-lg mb-4"
           width={300}
           height={200}
         />
@@ -27,7 +30,7 @@ export function DogCard({ dog, isFavorite, onToggleFavorite }: DogCardProps) {
         <p className="text-gray-600 mb-4">Zip Code: {dog.zip_code}</p>
         <Button
           variant="outline"
-          className="w-full"
+          className="w-full bg-slate-500 text-white"
           onClick={() => onToggleFavorite(dog.id)}
         >
           <Heart

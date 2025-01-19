@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { MessageCircle, X } from "lucide-react";
+import { MessageCircle, X, Dog } from "lucide-react";
 
 import { Button } from "../ShadcnUI/Button";
 import { Input } from "../ShadcnUI/Input";
@@ -45,13 +45,21 @@ export function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-2 bg-slate-700 rounded-full right-4 z-50">
       {isOpen ? (
         <div className="bg-white rounded-lg shadow-xl w-80 sm:w-96 flex flex-col h-[500px] transition-all duration-300 ease-in-out">
           <div className="p-4 border-b flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Chat with Us</h2>
-            <Button variant="ghost" size="icon" onClick={toggleChat}>
-              <X className="h-4 w-4" />
+            <div className="flex items-center space-x-2">
+              <h2 className="text-lg font-semibold">Chat with Us</h2>
+              <Dog className="h-8 w-8 text-blue-500" />
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleChat}
+              className="bg-slate-800 rounded-full"
+            >
+              <X className="h-4 w-4 text-white" />
             </Button>
           </div>
           <ScrollArea className="flex-grow p-4">
@@ -83,7 +91,7 @@ export function ChatWidget() {
                 onChange={(e) => setInputValue(e.target.value)}
                 className="flex-grow"
               />
-              <Button type="submit" className="ml-2">
+              <Button type="submit" className="ml-2 bg-blue-500 text-white">
                 Send
               </Button>
             </div>
@@ -94,7 +102,7 @@ export function ChatWidget() {
           onClick={toggleChat}
           className="rounded-full w-12 h-12 flex items-center justify-center"
         >
-          <MessageCircle className="h-6 w-6" />
+          <MessageCircle className="h-6 w-6 text-white scale-125" />
         </Button>
       )}
     </div>

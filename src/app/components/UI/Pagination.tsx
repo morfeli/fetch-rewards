@@ -16,7 +16,7 @@ export function PaginationButtons({
   onNextAction,
 }: PaginationButtonsProps) {
   return (
-    <div className="flex justify-center mt-8 space-x-2">
+    <div className="flex justify-center mt-8 space-x-2 bg-slate-400 text-white rounded-full">
       <Button onClick={onPreviousAction} disabled={currentPage === 1}>
         Previous
       </Button>
