@@ -24,11 +24,27 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(credentials);
-    // For now, we'll just redirect to the dashboard
-    // router.push("/dashboard");
+
+    const res = await fetch(
+      "https://frontend-take-home-service.fetch.com/auth/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: credentials.name,
+          email: credentials.email,
+        }),
+        credentials: "include", // Add this line
+      },
+    );
+
+    if (!res.ok) {
+      console.log("error");
+    } else {
+      router.push("/dashboard");
+    }
   };
 
   return (
