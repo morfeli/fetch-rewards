@@ -13,11 +13,11 @@
 ### Installation
 
 1. Clone the repository
-git clone https://github.com/yourusername/save-the-dogs.git
+- git clone https://github.com/yourusername/save-the-dogs.git
 2. Navigate to project directory
-cd save-the-dogs
+- cd save-the-dogs
 3. Install dependencies
-npm install
+- npm install
 
 
 
@@ -44,13 +44,3 @@ npm install
 - `react`: UI library
 - `@ai-sdk/openai`: AI integration
 - `tailwindcss`: Utility-first CSS framework
-
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## 🐾 Contact
-
-Your Name - [Your Email]
-
-Project Link: [https://github.com/yourusername/save-the-dogs](https://github.com/yourusername/save-the-dogs)
