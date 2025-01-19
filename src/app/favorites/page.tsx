@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Dog } from "../../../lib/fetchRewards";
 import { DogCard } from "../components/UI/DogCard";
+import AuthCheck from "../components/UI/AuthCheck";
 
 export default function FavoritesPage() {
   const [favorites, setFavorites] = useState<Dog[]>([]);
@@ -23,22 +24,24 @@ export default function FavoritesPage() {
   };
 
   return (
-    <section className="max-w-[1000px] flex flex-col items-center mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Your Favorite Dogs</h1>
-      {favorites.length === 0 ? (
-        <p>You haven't added any dogs to your favorites yet.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {favorites.map((dog) => (
-            <DogCard
-              key={dog.id}
-              dog={dog}
-              isFavorite={true}
-              onToggleFavorite={toggleFavorite}
-            />
-          ))}
-        </div>
-      )}
-    </section>
+    <AuthCheck>
+      <section className="max-w-[1000px] flex flex-col items-center mx-auto px-4 py-8">
+        <h2 className="text-3xl font-bold mb-6">Your Favorite Dogs</h2>
+        {favorites.length === 0 ? (
+          <p>You haven't added any dogs to your favorites yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {favorites.map((dog) => (
+              <DogCard
+                key={dog.id}
+                dog={dog}
+                isFavorite={true}
+                onToggleFavorite={toggleFavorite}
+              />
+            ))}
+          </div>
+        )}
+      </section>
+    </AuthCheck>
   );
 }

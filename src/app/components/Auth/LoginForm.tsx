@@ -1,6 +1,7 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
@@ -56,11 +57,10 @@ export default function LoginForm({ isAuthenticated }: LoginFormProps) {
         throw new Error("Login failed");
       }
 
-      // Set cookie instead of localStorage
-      Cookies.set("isAuthenticated", "true", { expires: 1 }); // Cookie expires in 1 day
+      Cookies.set("isAuthenticated", "true");
 
       toast("Login Successful!", {
-        description: "Welcome to DoggySearch! A furry friend awaits you. <3",
+        description: "Welcome to DoggySearch! A furry friend awaits you.",
         descriptionClassName: "text-black",
       });
 
@@ -71,7 +71,7 @@ export default function LoginForm({ isAuthenticated }: LoginFormProps) {
       console.error("Login error:", error);
 
       toast("Login failed!", {
-        description: "Please try again </3 :(",
+        description: "Please try again!",
         descriptionClassName: "text-black",
       });
     } finally {
@@ -85,15 +85,21 @@ export default function LoginForm({ isAuthenticated }: LoginFormProps) {
 
   if (isAuthenticated) {
     return (
-      <div className="bg-gray-100 flex items-center justify-center">
+      <div
+        className="bg-gray-100 flex items-center justify-center"
+        aria-label="Login success message"
+      >
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">
+            <CardTitle
+              className="text-2xl font-bold text-center"
+              aria-label="Welcome back message"
+            >
               Welcome Back to DoggySearch!
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-center mb-4">
+            <p className="text-center mb-4" aria-label="Logged in user message">
               You're already logged in. Ready to find your furry friend?
             </p>
           </CardContent>
@@ -101,6 +107,7 @@ export default function LoginForm({ isAuthenticated }: LoginFormProps) {
             <Button
               onClick={handleDashboardRedirect}
               className="w-full bg-blue-400 text-white hover:bg-blue-500"
+              aria-label="Go to dashboard button"
             >
               Go to Dashboard
             </Button>
@@ -111,17 +118,29 @@ export default function LoginForm({ isAuthenticated }: LoginFormProps) {
   }
 
   return (
-    <div className="bg-gray-100 flex items-center justify-center">
-      <Card className="w-full max-w-md">
+    <div
+      className="bg-gray-100 flex items-center justify-center"
+      aria-label="Login form container"
+    >
+      <Card className="w-full max-w-md" aria-label="Login card">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
+          <CardTitle
+            className="text-2xl font-bold text-center"
+            aria-label="Login form title"
+          >
             Login to DoggySearch
           </CardTitle>
         </CardHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} aria-label="Login form">
           <CardContent className="space-y-4">
             <div>
-              <Label htmlFor="name">Name</Label>
+              <Label
+                htmlFor="name"
+                className="text-slate-700 font-medium"
+                aria-label="Name field label"
+              >
+                Name
+              </Label>
               <Input
                 id="name"
                 type="text"
@@ -135,10 +154,17 @@ export default function LoginForm({ isAuthenticated }: LoginFormProps) {
                 }
                 required
                 className="w-full"
+                aria-label="Enter your name"
               />
             </div>
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label
+                htmlFor="email"
+                className="text-slate-700 font-medium"
+                aria-label="Email field label"
+              >
+                Email
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -152,6 +178,7 @@ export default function LoginForm({ isAuthenticated }: LoginFormProps) {
                 }
                 required
                 className="w-full"
+                aria-label="Enter your email"
               />
             </div>
           </CardContent>
@@ -160,6 +187,7 @@ export default function LoginForm({ isAuthenticated }: LoginFormProps) {
               type="submit"
               className="w-full bg-blue-400 text-white hover:bg-blue-500"
               disabled={isLoading}
+              aria-label={isLoading ? "Logging in process" : "Login button"}
             >
               {isLoading ? "Logging in..." : "Login"}
             </Button>

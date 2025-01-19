@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
-import Image from "next/image";
+import { useEffect, useState, useCallback } from "react";
+
 import { Input } from "../components/ShadcnUI/Input";
 import { Button } from "../components/ShadcnUI/Button";
 import { Label } from "../components/ShadcnUI/Label";
@@ -88,8 +88,8 @@ export default function DashboardPage() {
         const dogsData = await dogsResponse.json();
         setSearchResults(dogsData);
         setTotalPages(Math.ceil(data.total / 20));
-      } catch (err) {
-        setError("An error occurred while searching. Please try again.");
+      } catch (error: unknown) {
+        setError(`Failed to load dogs: ${(error as Error).message}`);
       } finally {
         setIsLoading(false);
       }
@@ -135,8 +135,8 @@ export default function DashboardPage() {
       }
 
       setAllBreeds(data);
-    } catch (error) {
-      setError(`Failed to load breeds: ${error.message}`);
+    } catch (error: unknown) {
+      setError(`Failed to load breeds: ${(error as Error).message}`);
     } finally {
       setIsLoading(false);
     }
@@ -181,8 +181,10 @@ export default function DashboardPage() {
       const matchedDogData = await matchedDogResponse.json();
       setMatchedDog(matchedDogData[0]);
       setIsMatchModalOpen(true);
-    } catch (error) {
-      setError("An error occurred while generating a match. Please try again.");
+    } catch (error: unknown) {
+      setError(
+        `An error occured trying to find a match: ${(error as Error).message}`,
+      );
     }
   }, [favorites]);
 
@@ -213,8 +215,17 @@ export default function DashboardPage() {
   return (
     <AuthCheck>
       <div className="max-w-[1000px] mx-auto px-4 py-8 fade-in">
-        <h1 className="text-3xl font-bold mb-6">Find Your Perfect Dog</h1>
-        <form onSubmit={handleSearch} className="mb-8">
+        <h1
+          className="text-3xl font-bold mb-6"
+          aria-label="Find Your Perfect Dog Title"
+        >
+          Find Your Perfect Dog
+        </h1>
+        <form
+          onSubmit={handleSearch}
+          className="mb-8"
+          aria-label="Dog search form"
+        >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
               <Label htmlFor="breed">Breed</Label>
@@ -222,8 +233,12 @@ export default function DashboardPage() {
                 onValueChange={(value) =>
                   setFilters((prev) => ({ ...prev, breed: value }))
                 }
+                aria-label="Select dog breed"
               >
-                <SelectTrigger className="w-full bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <SelectTrigger
+                  className="w-full bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  aria-label="Breed selection dropdown"
+                >
                   <SelectValue placeholder="Select breed" />
                 </SelectTrigger>
                 <SelectContent className="bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 overflow-auto max-h-60">
@@ -232,6 +247,7 @@ export default function DashboardPage() {
                       key={breed}
                       value={breed}
                       className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white transition-colors duration-200"
+                      aria-label={`Select ${breed} breed`}
                     >
                       {breed}
                     </SelectItem>
@@ -250,6 +266,7 @@ export default function DashboardPage() {
                 onChange={(e) =>
                   setFilters((prev) => ({ ...prev, ageMin: e.target.value }))
                 }
+                aria-label="Enter minimum age for dog search"
               />
             </div>
             <div>
@@ -262,36 +279,50 @@ export default function DashboardPage() {
                 onChange={(e) =>
                   setFilters((prev) => ({ ...prev, ageMax: e.target.value }))
                 }
+                aria-label="Enter maximum age for dog search"
               />
             </div>
           </div>
-          <div className="flex justify-between items-center">
-            <Select onValueChange={(value) => setSort(value)}>
-              <SelectTrigger className="w-[180px] bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <div
+            className="flex justify-between items-center"
+            aria-label="Search options"
+          >
+            <Select
+              onValueChange={(value) => setSort(value)}
+              aria-label="Sort dog search results"
+            >
+              <SelectTrigger
+                className="w-[180px] bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                aria-label="Sort criteria dropdown"
+              >
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent className="bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                 <SelectItem
                   value="breed:asc"
                   className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white transition-colors duration-200"
+                  aria-label="Sort by breed in ascending order"
                 >
                   Breed (A-Z)
                 </SelectItem>
                 <SelectItem
                   value="breed:desc"
                   className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white transition-colors duration-200"
+                  aria-label="Sort by breed in descending order"
                 >
                   Breed (Z-A)
                 </SelectItem>
                 <SelectItem
                   value="age:asc"
                   className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white transition-colors duration-200"
+                  aria-label="Sort by age from youngest to oldest"
                 >
                   Age (Youngest)
                 </SelectItem>
                 <SelectItem
                   value="age:desc"
                   className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white transition-colors duration-200"
+                  aria-label="Sort by age from oldest to youngest"
                 >
                   Age (Oldest)
                 </SelectItem>
@@ -301,6 +332,7 @@ export default function DashboardPage() {
               onClick={generateMatch}
               disabled={favorites.length === 0}
               className="bg-slate-700 text-white"
+              aria-label="Generate a match based on your favorite dogs"
             >
               Generate Match
             </Button>
@@ -311,17 +343,24 @@ export default function DashboardPage() {
           <div
             className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
             role="alert"
+            aria-live="polite"
           >
             <p>{error}</p>
           </div>
         ) : showSkeletons || isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            aria-label="Loading dog cards"
+          >
             {[...Array(12)].map((_, index) => (
-              <DogCardSkeleton key={index} />
+              <DogCardSkeleton key={index} aria-label="Skeleton of dog card" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            aria-label="Dog search results"
+          >
             {searchResults.length > 0
               ? searchResults.map((dog) => (
                   <DogCard
@@ -329,6 +368,7 @@ export default function DashboardPage() {
                     dog={dog}
                     isFavorite={favorites.some((fav) => fav.id === dog.id)}
                     onToggleFavorite={() => toggleFavorite(dog)}
+                    aria-label={`Details for ${dog.name}, a ${dog.breed}`}
                   />
                 ))
               : null}
@@ -344,6 +384,7 @@ export default function DashboardPage() {
           onNextAction={() =>
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
+          aria-label="Pagination controls for dog search results"
         />
 
         {matchedDog && (
@@ -351,10 +392,12 @@ export default function DashboardPage() {
             isOpen={isMatchModalOpen}
             onClose={() => setIsMatchModalOpen(false)}
             title="Your Perfect Match!"
+            aria-label="Modal showing your matched dog"
           >
             <MatchedDogDetails
               dog={matchedDog}
               onClose={() => setIsMatchModalOpen(false)}
+              aria-label={`Details of your matched dog, ${matchedDog.name}`}
             />
           </Modal>
         )}

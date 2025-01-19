@@ -30,7 +30,6 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const isAuthenticatedCookie = cookieStore.get("isAuthenticated");
-  const isAuthenticated = isAuthenticatedCookie?.value === "true";
 
   return (
     <html lang="en">
@@ -43,7 +42,7 @@ export default async function RootLayout({
           backgroundAttachment: "fixed",
         }}
       >
-        <Header isAuthenticated={isAuthenticated} />
+        <Header isAuthenticated={isAuthenticatedCookie} />
         <main className="flex-grow">{children}</main>
         <Toaster toastClassName="bg-slate-200" duration={1000} />
         <ChatWidget />

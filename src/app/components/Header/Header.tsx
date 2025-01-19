@@ -63,11 +63,8 @@ export default function Header({
         description: "You have been successfully logged out.",
       });
 
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
-    } catch (error) {
-      console.error("Logout error:", error);
+      router.push("/");
+    } catch {
       toast("Logout Failed", {
         description: "An error occurred during logout. Please try again.",
       });
@@ -79,15 +76,24 @@ export default function Header({
   const renderNavContent = () => {
     if (isLoading) {
       return (
-        <div className="flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <div
+          className="flex items-center justify-center"
+          aria-label="Loading indicator"
+        >
+          <Loader2
+            className="h-8 w-8 animate-spin text-blue-500"
+            aria-label="Loading spinner"
+          />
         </div>
       );
     }
 
     if (isAuthenticated) {
       return (
-        <div className="flex items-baseline space-x-4">
+        <div
+          className="flex items-baseline space-x-4"
+          aria-label="Navigation links for authenticated users"
+        >
           {NAV_LINKS.map(({ href, label }) => (
             <Link
               key={href}
@@ -97,6 +103,8 @@ export default function Header({
                   ? "text-slate-900 underline underline-offset-4"
                   : "text-gray-600"
               }`}
+              aria-current={pathname === href ? "page" : undefined}
+              aria-label={label}
             >
               {label}
             </Link>
@@ -106,6 +114,7 @@ export default function Header({
             onClick={handleLogout}
             disabled={isLoading}
             className="p-0 h-8 px-4 rounded-2xl bg-slate-700 text-white hover:bg-slate-800"
+            aria-label={isLoading ? "Logging out" : "Logout"}
           >
             {isLoading ? "Logging out..." : "Logout"}
           </Button>
@@ -114,21 +123,38 @@ export default function Header({
     }
 
     return (
-      <div className="bg-slate-500 p-2 rounded-xl shadow-md text-center">
-        <p className="text-base font-bold text-white">A furry friend awaits!</p>
-        <p className="text-sm text-white">Please login to get started. 🐶💕</p>
+      <div
+        className="bg-slate-500 p-2 rounded-xl shadow-md text-center"
+        aria-label="Login prompt for unauthenticated users"
+      >
+        <p
+          className="text-base font-bold text-white"
+          aria-label="Welcome message"
+        >
+          A furry friend awaits!
+        </p>
+        <p className="text-sm text-white" aria-label="Login encouragement">
+          Please login to get started. 🐶💕
+        </p>
       </div>
     );
   };
 
   return (
-    <header className="bg-white shadow-md ">
+    <header className="bg-white shadow-md " aria-label="Main navigation">
       <div className="px-4 py-4 flex items-center justify-between w-full">
-        <Link href="/" className="flex items-center space-x-2">
-          <Dog className="h-8 w-8 text-blue-500" />
+        <Link
+          href="/"
+          className="flex items-center space-x-2"
+          aria-label="DoggySearch home link"
+        >
+          <Dog className="h-8 w-8 text-blue-500" aria-label="Dog icon" />
           <span className="text-xl font-bold">DoggySearch</span>
         </Link>
-        <nav className="hidden md:flex items-center space-x-6  justify-center">
+        <nav
+          className="hidden md:flex items-center space-x-6  justify-center"
+          aria-label="Main navigation menu"
+        >
           {renderNavContent()}
         </nav>
       </div>
