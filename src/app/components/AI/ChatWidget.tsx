@@ -1,48 +1,28 @@
 "use client";
 
-import { useState } from "react";
-
+import { useState, useRef, useEffect } from "react";
+import { type Message, useChat } from "ai/react"; // Assuming you have this package installed
 import { MessageCircle, X, Dog } from "lucide-react";
-
 import { Button } from "../ShadcnUI/Button";
 import { Input } from "../ShadcnUI/Input";
 import { ScrollArea } from "../ShadcnUI/ScrollArea";
 
-type Message = {
-  id: number;
-  text: string;
-  sender: "user" | "bot";
-};
-
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat({
+      api: "/api/chat", // Specify your chat endpoint here
+    });
 
   const toggleChat = () => setIsOpen(!isOpen);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (inputValue.trim()) {
-      const newMessage: Message = {
-        id: Date.now(),
-        text: inputValue,
-        sender: "user",
-      };
-      setMessages([...messages, newMessage]);
-      setInputValue("");
-      // Here you would typically send the message to your backend
-      // and then add the response to the messages
-      setTimeout(() => {
-        const botResponse: Message = {
-          id: Date.now(),
-          text: "Thanks for your message! Our team will get back to you soon.",
-          sender: "bot",
-        };
-        setMessages((prev) => [...prev, botResponse]);
-      }, 1000);
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  };
+  }, [messages]);
 
   return (
     <div className="fixed bottom-2 bg-slate-700 rounded-full right-4 z-50">
@@ -62,22 +42,22 @@ export function ChatWidget() {
               <X className="h-4 w-4 text-white" />
             </Button>
           </div>
-          <ScrollArea className="flex-grow p-4">
-            {messages.map((message) => (
+          <ScrollArea ref={scrollRef} className="flex-grow p-4">
+            {messages.map((message, index) => (
               <div
-                key={message.id}
+                key={index}
                 className={`mb-4 ${
-                  message.sender === "user" ? "text-right" : "text-left"
+                  message.role === "user" ? "text-right" : "text-left"
                 }`}
               >
                 <span
                   className={`inline-block p-2 rounded-lg ${
-                    message.sender === "user"
+                    message.role === "user"
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200 text-gray-800"
                   }`}
                 >
-                  {message.text}
+                  {message.content}
                 </span>
               </div>
             ))}
@@ -87,12 +67,16 @@ export function ChatWidget() {
               <Input
                 type="text"
                 placeholder="Type a message..."
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
+                value={input}
+                onChange={handleInputChange}
                 className="flex-grow"
               />
-              <Button type="submit" className="ml-2 bg-blue-500 text-white">
-                Send
+              <Button
+                type="submit"
+                className="ml-2 bg-blue-500 text-white"
+                disabled={isLoading}
+              >
+                {isLoading ? "Sending..." : "Send"}
               </Button>
             </div>
           </form>
