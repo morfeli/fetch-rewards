@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
+
 import { Label } from "../ShadcnUI/Label";
 import { Input } from "../ShadcnUI/Input";
 import { Button } from "../ShadcnUI/Button";
 import { Textarea } from "../ShadcnUI/Textarea";
-import { toast } from "sonner";
 
 export function ContactForm() {
   const [formData, setFormData] = useState({

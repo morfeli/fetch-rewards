@@ -7,20 +7,6 @@ export interface Dog {
   breed: string;
 }
 
-export interface Location {
-  zip_code: string;
-  latitude: number;
-  longitude: number;
-  city: string;
-  state: string;
-  county: string;
-}
-
-export interface Coordinates {
-  lat: number;
-  lon: number;
-}
-
 export interface LoginRequest {
   name: string;
   email: string;
@@ -47,27 +33,10 @@ export interface DogSearchResponse {
   prev?: string;
 }
 
-// Fetch dogs by IDs
 export interface FetchDogsRequest {
   ids: string[];
 }
 
 export interface FetchDogsResponse {
   dogs: Dog[];
-}
-
-export interface MatchRequest {
-  dogIds: string[];
-}
-
-export interface MatchResponse {
-  match: string;
-}
-
-export interface FetchLocationsRequest {
-  zipCodes: string[];
-}
-
-export interface FetchLocationsResponse {
-  locations: Location[];
 }

@@ -1,7 +1,8 @@
 import Image from "next/image";
+import { Heart } from "lucide-react";
+
 import { Card, CardContent } from "../ShadcnUI/Card";
 import { Button } from "../ShadcnUI/Button";
-import { Heart } from "lucide-react";
 import { Dog } from "../../../../lib/fetchRewards";
 
 interface DogCardProps {
