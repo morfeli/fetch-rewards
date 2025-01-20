@@ -57,7 +57,9 @@ export default function LoginForm({ isAuthenticated }: LoginFormProps) {
         throw new Error("Login failed");
       }
 
-      Cookies.set("isAuthenticated", "true");
+      const expirationDate = new Date();
+      expirationDate.setHours(expirationDate.getHours() + 1);
+      Cookies.set("isAuthenticated", "true", { expires: expirationDate });
 
       toast("Login Successful!", {
         description: "Welcome to DoggySearch! A furry friend awaits you.",
